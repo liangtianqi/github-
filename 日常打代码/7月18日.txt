@@ -1,0 +1,222 @@
+#include<iostream> 
+#include<cstdlib>
+using namespace std;
+class throttle
+{public:
+	//构造函数
+	throttle();
+	throttle(int size);
+	//修改成员函数 
+	void shut_off();
+	void shift(int amount);
+	//常量成员函数 
+	double flow()const;
+	bool is_on()const;
+  private:
+  	int top_position; 
+  	int position;
+};
+/*构造函数的实现1
+throttle::throttle()
+{
+	top_position=1;
+	position=0;
+ } 
+ 
+ 构造函数的实现2
+ throttle::throttle(int size,int initial)
+ {
+ assert(size>0);
+ assert(initial>=0);
+ assert(initial<=size);
+ top_position=size;
+ position=initial; 
+ */ 
+int main()
+{
+	throttle sample;
+	int user_input;
+	cout<<"I have a throttle with 6 position."<< endl;
+	cout<<"Where would you like to set the throttle?"<<endl;
+	cout<<"Please type a number from 0 to 6:";
+	cin>>user_input;
+	sample.shut_off();
+	sample.shift(user_input);
+	
+	while (sample.is_on())
+	{cout<<"The flow is now "<<sample.flow()<<endl;
+	sample.shift(-1);
+	}
+	cout<<"The flow is now off"<<endl;
+	return EXIT_SUCCESS;
+}
+
+
+
+/*
+修订实现shift（）函数 
+void throttle::shift(int amount)
+{
+position+=amount;
+if(position<0)
+position=0;
+else if (position>top_position)
+position=top_position;
+}
+*/
+
+
+//其他内联成员函数的修订 ,,在类定义中再定义一个函数，花括号外无分号 
+class throttle
+{public:
+	//构造函数   没有返回类型 
+	throttle();
+	throttle(int size);
+	//修改成员函数 
+	void shut_off() {position=0;} 
+	void shift(int amount);
+	//常量成员函数 
+	double flow()const  {return position/double(top_position);}
+	bool is_on()const  {return(position>0);}
+  private:
+  	int top_position; 
+  	int position;
+};
+
+
+创建名称空间
+namespace main_savitch_2A
+{
+//所有属于本名称空间的内容都位于这里
+}
+
+类的头文件定义 把类定义放置在一个名称空间之中
+并用一个宏保护把整个内容包括起来
+宏保护可以防止发生重复定义错误
+#ifndef MAIN_SAVITCH_THROTTLE
+#define MAIN_SAVITCH＿THROTTLE
+namespace main_savitch_2A
+{
+class throttle
+{
+public:
+//CONSTRUCTORS
+  throttle();
+   throttle(int size);
+   //
+    void shut_off(){position=0;}
+     void shift(int amount);
+     //
+     double flow()const  {return position / double(top_position);}
+     bool is_on () const { return (position>0);}
+     private:
+          int top_position;
+          int position;
+      };
+}
+
+#endif
+//复制构造函数
+throttle x(100);
+x.shift(50);
+throttle y(x);//y被初始化为x的一个副本，这两个节流阀都处于中间位置
+//throttle y=x; 与以上语句同效 
+
+
+//实现文件
+#include <cassert>
+#include "throttle.h"
+namespace main_savitch_2A
+{
+	throttle::throttle()
+	{
+		top_position=1;
+		position=0;
+	}
+	throttle::throttle(int size)
+	{
+		assert(size>0);
+		top_position=size;
+		position=0;
+	}
+	void throttle::shift(int amount)
+	{
+		position+=amount;
+		if (position<0)
+		position=0;
+		else if(position>top_position)
+		position=top_position;
+	 } 
+ } 
+
+//使用名称空间里的数据项
+#include<iostream> 
+#include <cstdlib>
+#include "throttle.h"
+using namespace std;
+using main_savitch_2A::throttle;
+const int DEMO_SIZE=5;
+int main()
+{
+	throttle sample(DEMO_SIZE);
+	int user_input;
+	cout <<"I have a throttle with"<<DEMO_SIZE<<"position."<<endl;
+	cout <<"Please type a number from 0 to "<<DEMO_SIZE<<":";
+	cin>> user_input;
+	sample.shift(user_input);
+	
+	while(sample.is_on() )
+	{
+		cout <<"The flow is now "<< sample.flow() <<endl;
+		sample.shift(-1); 
+	 } 
+	 cout <<"The flow is now off"<<endl;
+	 return EXIT_SUCCESS;
+}
+//操作一个点的位置使他绕原点旋转九十度
+#ifndef MAIN_SAVITCH_POINT_H
+#define MAIN_SAVITCH_POINT_H
+
+namespace main_savitch_2A
+{
+	class point
+	{
+		public:
+			point(double initial_x=0.0,double initial_y=0.0);//构造函数
+			//修改成员函数 
+			void shift(double x_amount,double y_amount);
+			void rotate90();
+			//常量成员函数 
+			double get_x() const {return x;}
+			double get_y() const {return y;}
+		private:
+			double x;
+			double y;
+	};
+}
+#endif
+
+
+#include "point.h"
+namespace main_savitch_2A
+{
+	point::point(double initial_x,double initial_y)
+	{
+		x=initial_x;
+		y=initial_y;
+	  }  
+	void point::shift(double x_amount,double y_amount)
+	{
+		x+=x_amount;
+		y+=y_amount;
+	 } 
+	void point::rotate90() //实现旋转九十度的函数 
+	{
+		double new_x;
+		double new_y;
+		new_x=y;
+		new_y=-x;
+		x=new_x;
+		y=new_y;
+	}
+}
