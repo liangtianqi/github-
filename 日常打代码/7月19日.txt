@@ -1,0 +1,117 @@
+//值参数 
+int rotattions_needed(point p)
+{
+	int answer;
+	answer=0;
+	while((p.get_x<0)||(p.get_y()<0))
+	{
+		p.rotate90();
+		++answer;
+	}
+	return answer;
+ } 
+ 
+//引用参数
+void rotate_to_upper_right(point& p)
+{
+	while ((p.get_x()<0)||(p.get_y()<0))
+	p.rotate90();
+ } 
+ 
+ 
+//静态引用参数
+double distance(const point& p1,const point& p2)
+  //后置条件
+  //所使用的库
+{
+	double a,b,c_squared;
+	a=p1.get_x()-p2.get_x();
+	b=p1.get_y()-p2.get_y();
+	
+	c_squared=a*a+b*b;
+	return aqrt(c_squared);
+ } 
+ 
+//函数的返回值的数据类型是类
+point middle(const point& p1,const point& p2)
+  //后置条件：返回值为p1与p2之间的中点
+{
+	double x_midpoint,y_indpoint;
+	
+	x_midpoint=(p1.get_x()+p2.get_x())/2;
+	y_midpoint=(p1.get_y()+p2.get_y())/2;
+	
+	point midpoint(x_midpoint,y_midpoint);
+	return midpoint; 
+ } 
+
+
+
+//二元比较操作符重载
+bool operator==(const point& p1,const point& p2)
+   //后置条件：如果p1与p2相等，返回值为ture，否则为false
+{
+	return(p1.get_x()==p2.get_x())&&(p1.get_y()==p2.get_y());
+ } 
+ 
+ 
+//二元算数操作符重载同上 
+//输入输出操作符重载
+ostream& operator <<(ostream& outs,const point& sourcs)
+  //后置条件：source的x和y坐标值写入到outs中，返回值为ostream类型的outs
+{
+	out <<source.get_x() <<"  " source.get_y();
+	return outs;
+ } 
+istream& operator >>(istream& ins, point& target)
+    //后置条件：target 的x和y坐标值写入到ins中，返回值为istream类型的ins 
+    //所使用的库：iostream 
+    //point类的友元函数
+{
+	ins >>target.x >>target.y;
+	return ins;
+ } 
+//友元函数
+
+
+//point类汇总
+#ifndef MAIN_SAVITCH_NEWPOINT_H
+#define MAIN_SAVITCH_NEWPOINT_H
+#include <iostream>
+
+namespace main_savitch_2B
+{
+	class point
+	{
+		public:
+			point(double initial_x=0.0,double initial_y=0.0);
+			void shift(double x_amount,double y_amount);
+			void rotate90();
+			
+			double get_x()const {return x;}
+			double get_y()const {return y;}
+			
+			friend std::istream& operator>>(std::istream& ins,point& target);
+		private:
+		    double x,y; 
+	}
+	
+	double distance(const point& p1,const point& p2);
+	point middle(const point& p1,const point& p2);
+	point operator +(const point& p1,const point& p2);
+	bool operator==(const point& p1,const point& p2);
+	bool operator!= (const point& p1,const point& p2);
+	std::ostream& operator <<(std::ostream &outs,const point& source);
+ } 
+ #endif
+ 
+ //标准模板库与pair类型
+ #include <utility>
+ using namespace std;
+ int main()
+ {
+ 	pair<int, double>p;
+ 	p.first=42;
+ 	p.second =9.25;
+ }
+  
