@@ -1,0 +1,68 @@
+//查找
+//顺序查找和二叉查找
+void search(
+    const int a[],
+    size_t first,
+    size_t size,
+    int target,
+    bool& found,
+    size_t& location
+) 
+
+
+size_t middle;
+ if(size==0)
+ found=false;
+ else 
+    {
+    	middle=first+size/2;
+    	if(target==a[middle])
+    	{
+    		location=middle;
+    		found=true;
+		}
+		else if(target<middle)
+		search(a,first,size/2,target,found,location);
+		else
+		    search(a,middle,(size-1)/2,target,found,location);
+		
+	}
+	
+//递归调用的深度n个数组中进行二叉查找
+//最多为n被2除的次数，结果小于1时停止
+//T(n)=18H(n)+2=18（log2n+1）+2
+
+
+//用于无序区间的函数
+#include<algorithm>
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+	string line;
+	string::iterator i,where_is_e;
+	
+	cout << "Please enter a line of text:";
+	getline(cin,line);
+	where_is_e=find(line.begin(),line.end(),'e');
+	
+	cout <<"You entered the following before entering an e:";
+	for (i=line.begin();i!=where_is_e;++i)
+	   cout <<*i;
+	cout << endl;
+	
+	cout <<"The rest of your input was:";
+	for (i=where_is_e;i!=line.end();++i)
+	    cout << *i;
+	cout <<endl;
+	
+	return 0;
+ } 
+
+
+//STL的search函数
+iterator search(
+    iterator1 first,iterator1 last,
+	iterator2 target_first, iterator2 target_last
+	) ;
